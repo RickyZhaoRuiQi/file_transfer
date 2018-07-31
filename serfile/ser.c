@@ -69,6 +69,8 @@ void* work_thread(void * arg)
 	int flag = 1;
 	char ready_path[100] = "/home/Ricky/WorkSpace/file_transfer/usr/";
 	char home_path[100] = "/home/Ricky/WorkSpace/file_transfer/usr/";
+	if(access(home_path,F_OK) == -1)
+	  assert(mkdir(home_path,0755) != -1);
 	while( 1 )
 	{
 		struct package package_ready;
@@ -381,6 +383,8 @@ void* work_thread(void * arg)
 					strcpy(save_md5,package_msg.buff);
 					char path[100] = {0};
 					char save_path[100] = "/home/Ricky/WorkSpace/file_transfer/allfile/";
+					if(access(save_path,F_OK) == -1)
+					  assert(mkdir(save_path,0755) != -1);
 					strcpy(path,ready_path);
 					strcat(path,myargv[n]);//strcat(save_path,myargv[n]);
 					MYSQL *mpcon = mysql_init((MYSQL*)0);
