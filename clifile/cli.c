@@ -9,6 +9,9 @@
 #include <fcntl.h>
 #include <openssl/md5.h>
 #include <dirent.h>
+#include <ctype.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 
 void calculate_md5(int fd,char md[]);
 void recv_dir(char *path,int sockfd);
@@ -45,7 +48,9 @@ int main()
 			memset(&package_ready,0,4 + 512);
 			package_ready.buff[0] = choose;
 			strcat(package_ready.buff,"#");
-			printf("usr name:");fflush(stdout);fflush(stdin);
+			printf("usr name:");fflush(stdout);
+			int c = 0;//用于清理缓冲区
+			while((c = getchar()) != '\n' && c != EOF);
 			scanf("%s",package_ready.buff + 2);
 			int ready_length = strlen(package_ready.buff);
 			int usr_pwd_flag = 1,index = 2;
@@ -58,7 +63,6 @@ int main()
 			printf("password:");fflush(stdout);fflush(stdin);
 			scanf("%s",package_ready.buff + ready_length + 1);
 			index = ready_length + 1;
-			int c = 0;//用于清理缓冲区
 			while(package_ready.buff[index] != 0)
 			{
 				if(!isalnum(package_ready.buff[index++]))
